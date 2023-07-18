@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Messenger</title>
+    <style>
+        form {
+            margin-bottom: 10px;
+        }
+        table, th, td {
+            border: 1px solid;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+<div sec:authentication="name"></div>
+<div>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+    <form th:action="@{/send}" method="post">
+        <label>Message: <input type="text" name="text"/></label>
+        <input type="submit" value="Send"/>
+    </form>
+    <form th:action="@{/messages}" method="get">
+        <label>Username: <input type="text" name="sender" th:value="${sender}"/></label>
+        <input type="submit" value="Filter"/>
+        <a th:href="@{/messages}">Reset</a>
+    </form>
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Sender</th>
+            <th>Text</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="message : ${messages}">
+            <td th:text="${message.id}">Id</td>
+            <td th:text="${#dates.format(message.date, 'dd.MM.yyyy HH:mm:ss')}">Date</td>
+            <td th:text="${message.sender}">Sender</td>
+            <td th:text="${message.text}">Text</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
